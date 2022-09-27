@@ -1,0 +1,23 @@
+version: '3'
+services:
+
+  development:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VARIANT: 17-bullseye
+        INSTALL_MAVEN: true
+        INSTALL_GRADLE: false
+        NODE_VERSION: lts/*
+    volumes:
+      - ..:/workspace:cached
+    command: sleep infinity
+    user: vscode
+    
+  mysql_db:
+    hostname: mysql_db
+    image: mysql/mysql-server:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=book_store
