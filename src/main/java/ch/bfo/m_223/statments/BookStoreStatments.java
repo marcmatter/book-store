@@ -1,5 +1,6 @@
 package ch.bfo.m_223.statments;
 
+import ch.bfo.m_223.connection.MysqlConnection;
 import ch.bfo.m_223.contract.BookDto;
 import ch.bfo.m_223.contract.CustomerDto;
 import ch.bfo.m_223.contract.IBookStore;
@@ -8,7 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import java.sql.Statement;
+
 public class BookStoreStatments implements IBookStore {
+    private MysqlConnection connection = new MysqlConnection();
+    private Statement db = connection.getStatment();
+    
     private Random random = new Random();
     @Override
     public int order(int customerId, int bookId) {
