@@ -14,10 +14,17 @@ services:
       - ..:/workspace:cached
     command: sleep infinity
     user: vscode
+    depends_on:
+      - mysql
     
-  mysql_db:
-    hostname: mysql_db
-    image: mysql/mysql-server:latest
+  mysql:
+    image: mysql/mysql-server:8.0
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=book_store
+      - MYSQL_ROOT_HOST=%
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+      

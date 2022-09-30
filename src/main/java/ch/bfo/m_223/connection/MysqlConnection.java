@@ -31,7 +31,7 @@ public class MysqlConnection {
     try {
       Class.forName("com.mysql.cj.jdbc.Driver");
       connection = DriverManager.getConnection(
-        "jdbc:mysql://localhost:3306",
+        "jdbc:mysql://mysql:3306", // docker hostname is mysql
         DB_USER, DB_PASSWORD
       );
       statement = connection.createStatement();
