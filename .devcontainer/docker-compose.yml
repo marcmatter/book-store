@@ -1,0 +1,30 @@
+version: '3'
+services:
+
+  development:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VARIANT: 17-bullseye
+        INSTALL_MAVEN: true
+        INSTALL_GRADLE: false
+        NODE_VERSION: lts/*
+    volumes:
+      - ..:/workspace:cached
+    command: sleep infinity
+    user: vscode
+    depends_on:
+      - mysql
+    
+  mysql:
+    image: mysql/mysql-server:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=book_store
+      - MYSQL_ROOT_HOST=%
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+      
