@@ -8,17 +8,30 @@ import ch.bfo.m_223.contract.IBookStore;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 public class BookStoreStatments implements IBookStore {
-    private MysqlConnection connection = new MysqlConnection();
-    private Statement db = connection.getStatment();
+    private MysqlConnection mysql = new MysqlConnection();
+    private Statement statment = mysql.getStatment();
+    private Connection connection = mysql.getConnection();
     
     private Random random = new Random();
     @Override
     public int order(int customerId, int bookId) {
-        return random.nextInt();
+        try {
+            String sql = "INSERT INTO `order`(customer_id, book_id) VALUES (?, ?)";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(2, customerId);
+            ps.setInt(1, bookId);
+            int order_id = ps.executeUpdate();
+            return order_id;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     @Override
@@ -28,8 +41,18 @@ public class BookStoreStatments implements IBookStore {
 
     @Override
     public CustomerDto createCustomer(CustomerDto newCustomer) {
-        newCustomer.setCustomerId(random.nextInt());
-        return newCustomer;
+        try {
+            String sql = "INSERT INTO `customer`(name, prename) VALUES (?, ?)";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, newCustomer.getName());
+            ps.setString(2, newCustomer.getPrename());
+            int customer_id = ps.executeUpdate();
+            newCustomer.setCustomerId(customer_id);
+            return newCustomer;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return newCustomer;
+        }
     }
 
     @Override
@@ -44,8 +67,20 @@ public class BookStoreStatments implements IBookStore {
 
     @Override
     public BookDto createBook(BookDto newBook) {
-        newBook.setBookId(random.nextInt());
-        return newBook;
+        try {
+            String sql = "INSERT INTO `book`(title, author_id, genere_id, publisher_id) VALUES (?, ?, ?, ?)";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, newBook.getTitel());
+            ps.setString(2, newBook.getAuthor());
+            ps.setString(3, newBook.getGenre());
+            ps.setString(4, newBook.getPublisher());
+            int book_id = ps.executeUpdate();
+            newBook.setBookId(book_id);
+            return newBook;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return newBook;
+        }
     }
 
     @Override

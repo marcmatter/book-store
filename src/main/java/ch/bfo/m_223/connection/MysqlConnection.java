@@ -26,6 +26,10 @@ public class MysqlConnection {
   public Statement getStatment() {
     return statement;
   }
+  public Connection getConnection() {
+    System.out.println(connection);
+    return connection;
+  }
   
   private void establishConnection() {
     try {
@@ -40,6 +44,7 @@ public class MysqlConnection {
       statement.execute("USE book_store");
     } catch (Exception exception) {
       System.out.println(exception);
+      System.exit(1);
     }
   }
   
