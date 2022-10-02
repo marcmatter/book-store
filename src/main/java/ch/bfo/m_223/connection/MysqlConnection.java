@@ -75,6 +75,11 @@ public class MysqlConnection {
       );
       sr.runScript(reader);
       System.out.println("Datenbank zurückgesetzt");
+      reader = new BufferedReader(
+        new FileReader("src/main/resources/scripts/sample_data.sql")
+      );
+      sr.runScript(reader);
+      System.out.println("Added sample data");
     } catch (Exception exception) {
       System.out.println(exception);
     }

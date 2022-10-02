@@ -5,23 +5,23 @@ USE `book_store`;
 -- Setup Tables
 CREATE TABLE `author` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `name` text NOT NULL,
-  `prename` text
+  `name` VARCHAR(35) NOT NULL,
+  `prename` VARCHAR(35)
 );
 
 CREATE TABLE `genere` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `name` text
+  `name` VARCHAR(35)
 );
 
 CREATE TABLE `publisher` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `name` text NOT NULL
+  `name` VARCHAR(35) NOT NULL
 );
 
 CREATE TABLE `book` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `title` text NOT NULL,
+  `title` VARCHAR(35) NOT NULL,
   `author_id` int,
   `genere_id` int,
   `publisher_id` int
@@ -35,8 +35,8 @@ CREATE TABLE `order` (
 
 CREATE TABLE `customer` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `name` text NOT NULL,
-  `prename` text
+  `name` VARCHAR(35) NOT NULL,
+  `prename` VARCHAR(35)
 );
 
 -- Add foreign keys

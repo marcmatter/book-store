@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Random;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -23,11 +24,18 @@ public class BookStoreStatments implements IBookStore {
     public int order(int customerId, int bookId) {
         try {
             String sql = "INSERT INTO `order`(customer_id, book_id) VALUES (?, ?)";
-            PreparedStatement ps = connection.prepareStatement(sql);
+            PreparedStatement ps = connection.prepareStatement(
+                sql,
+                Statement.RETURN_GENERATED_KEYS
+            );
             ps.setInt(2, customerId);
             ps.setInt(1, bookId);
-            int order_id = ps.executeUpdate();
-            return order_id;
+            ps.executeUpdate();
+            ResultSet rs=ps.getGeneratedKeys();
+            if(rs.next()){
+                return rs.getInt(1);
+            }
+            return 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return 0;
@@ -43,11 +51,21 @@ public class BookStoreStatments implements IBookStore {
     public CustomerDto createCustomer(CustomerDto newCustomer) {
         try {
             String sql = "INSERT INTO `customer`(name, prename) VALUES (?, ?)";
-            PreparedStatement ps = connection.prepareStatement(sql);
+            PreparedStatement ps = connection.prepareStatement(
+                sql,
+                Statement.RETURN_GENERATED_KEYS
+            );
             ps.setString(1, newCustomer.getName());
             ps.setString(2, newCustomer.getPrename());
-            int customer_id = ps.executeUpdate();
-            newCustomer.setCustomerId(customer_id);
+            ps.executeUpdate();
+            ResultSet rs=ps.getGeneratedKeys();
+            if(rs.next()){
+                CustomerDto customer = new CustomerDto();
+                customer.setCustomerId(rs.getInt(1));
+                customer.setName(rs.getString(2));
+                customer.setPrename(rs.getString(3));
+                return customer;
+            }
             return newCustomer;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -74,8 +92,14 @@ public class BookStoreStatments implements IBookStore {
             ps.setString(2, newBook.getAuthor());
             ps.setString(3, newBook.getGenre());
             ps.setString(4, newBook.getPublisher());
-            int book_id = ps.executeUpdate();
-            newBook.setBookId(book_id);
+            ResultSet rs=ps.getGeneratedKeys();
+            if(rs.next()){
+                // CustomerDto customer = new CustomerDto();
+                // customer.setCustomerId(rs.getInt(1));
+                // customer.setName(rs.getString(2));
+                // customer.setPrename(rs.getString(3));
+                // return customer;
+            }
             return newBook;
         } catch (SQLException e) {
             e.printStackTrace();
