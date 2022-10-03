@@ -10,7 +10,7 @@ import org.apache.ibatis.jdbc.ScriptRunner;
 
 public class MysqlConnection {
   final private String[] requiredTables = new String[] {
-    "book", "customer", "order", "genere", "author", "publisher"
+    "book", "customer", "order"
   };
   final private String DB_USER = "root";
   final private String DB_PASSWORD = "root";

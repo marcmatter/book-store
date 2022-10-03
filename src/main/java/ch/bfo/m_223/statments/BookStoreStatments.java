@@ -8,6 +8,7 @@ import ch.bfo.m_223.contract.IBookStore;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -35,10 +36,10 @@ public class BookStoreStatments implements IBookStore {
             if(rs.next()){
                 return rs.getInt(1);
             }
-            return 0;
+            return -1;
         } catch (SQLException e) {
             e.printStackTrace();
-            return 0;
+            return -1;
         }
     }
 
@@ -49,6 +50,7 @@ public class BookStoreStatments implements IBookStore {
 
     @Override
     public CustomerDto createCustomer(CustomerDto newCustomer) {
+        CustomerDto customer = new CustomerDto();
         try {
             String sql = "INSERT INTO `customer`(name, prename) VALUES (?, ?)";
             PreparedStatement ps = connection.prepareStatement(
@@ -60,16 +62,17 @@ public class BookStoreStatments implements IBookStore {
             ps.executeUpdate();
             ResultSet rs=ps.getGeneratedKeys();
             if(rs.next()){
-                CustomerDto customer = new CustomerDto();
                 customer.setCustomerId(rs.getInt(1));
-                customer.setName(rs.getString(2));
-                customer.setPrename(rs.getString(3));
-                return customer;
             }
-            return newCustomer;
+            rs = statment.executeQuery("SELECT * FROM `customer` WHERE `id`=" + customer.getCustomerId());
+            if(rs.next()){
+                customer.setName(rs.getString("name"));
+                customer.setPrename(rs.getString("prename"));
+            }
+            return customer;
         } catch (SQLException e) {
             e.printStackTrace();
-            return newCustomer;
+            return customer;
         }
     }
 
@@ -85,25 +88,32 @@ public class BookStoreStatments implements IBookStore {
 
     @Override
     public BookDto createBook(BookDto newBook) {
+        BookDto book = new BookDto();
         try {
-            String sql = "INSERT INTO `book`(title, author_id, genere_id, publisher_id) VALUES (?, ?, ?, ?)";
-            PreparedStatement ps = connection.prepareStatement(sql);
+            String sql = "INSERT INTO `book`(title, author, genere, publisher) VALUES (?, ?, ?, ?)";
+            PreparedStatement ps = connection.prepareStatement(
+                sql,
+                Statement.RETURN_GENERATED_KEYS
+            );
             ps.setString(1, newBook.getTitel());
             ps.setString(2, newBook.getAuthor());
             ps.setString(3, newBook.getGenre());
             ps.setString(4, newBook.getPublisher());
             ResultSet rs=ps.getGeneratedKeys();
             if(rs.next()){
-                // CustomerDto customer = new CustomerDto();
-                // customer.setCustomerId(rs.getInt(1));
-                // customer.setName(rs.getString(2));
-                // customer.setPrename(rs.getString(3));
-                // return customer;
+                book.setBookId(rs.getInt(1));
             }
-            return newBook;
+            rs = statment.executeQuery("SELECT * FROM `book` WHERE `id`=" + book.getBookId());
+            if(rs.next()){
+                book.setTitel(rs.getString("title"));
+                book.setGenre(rs.getString("genere"));
+                book.setPublisher(rs.getString("publisher"));
+                book.setAuthor(rs.getString("author"));
+            }
+            return book;
         } catch (SQLException e) {
             e.printStackTrace();
-            return newBook;
+            return book;
         }
     }
 
