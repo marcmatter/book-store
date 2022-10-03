@@ -32,14 +32,14 @@ INSERT INTO `customer`
 ('Green', 'Samantha');
 
 INSERT INTO `order`
-(`book_id`, `customer_id`) VALUES
-(1, 8),
-(1, 6),
-(3, 5),
-(4, 2),
-(5, 12),
-(7, 9),
-(9, 7),
-(9, 5),
-(9, 3),
-(11, 1);
+(`book_id`, `customer_id`, `isDelivered`) VALUES
+(1, 8, true),
+(1, 6, false),
+(3, 5, true),
+(4, 2, false),
+(5, 12, false),
+(7, 9, false),
+(9, 7, true),
+(9, 5, true),
+(9, 3, true),
+(11, 1, true);

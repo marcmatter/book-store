@@ -4,7 +4,7 @@ USE `book_store`;
 
 -- Setup Tables
 CREATE TABLE `book` (
-  `id` int PRIMARY KEY AUTO_INCREMENT,
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
   `title` VARCHAR(50) NOT NULL,
   `author` VARCHAR(50),
   `genere` VARCHAR(50),
@@ -12,13 +12,14 @@ CREATE TABLE `book` (
 );
 
 CREATE TABLE `order` (
-  `id` int PRIMARY KEY AUTO_INCREMENT,
-  `book_id` int NOT NULL,
-  `customer_id` int NOT NULL
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
+  `book_id` INT NOT NULL,
+  `customer_id` INT NOT NULL,
+  `isDelivered` BOOLEAN DEFAULT false
 );
 
 CREATE TABLE `customer` (
-  `id` int PRIMARY KEY AUTO_INCREMENT,
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
   `name` VARCHAR(50) NOT NULL,
   `prename` VARCHAR(50)
 );
