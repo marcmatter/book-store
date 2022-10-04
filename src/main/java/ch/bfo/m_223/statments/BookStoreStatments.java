@@ -85,7 +85,41 @@ public class BookStoreStatments implements IBookStore {
 
     @Override
     public BookDto editBook(BookDto editedBook) {
-        return editedBook;
+        BookDto book = new BookDto();
+        try {
+            String sql = """
+                UPDATE Registration 
+                SET title = ? 
+                SET author = ? 
+                SET publisher = ? 
+                SET genre = ? 
+                WHERE id = 
+                """ + editedBook.getBookId();
+            PreparedStatement ps = connection.prepareStatement(
+                sql,
+                Statement.RETURN_GENERATED_KEYS
+            );
+            ps.setString(1, editedBook.getTitel());
+            ps.setString(2, editedBook.getAuthor());
+            ps.setString(3, editedBook.getPublisher());
+            ps.setString(4, editedBook.getGenre());
+            ps.executeUpdate();
+            ResultSet rs=ps.getGeneratedKeys();
+            if(rs.next()){
+                book.setBookId(rs.getInt(1));
+            }
+            rs = statment.executeQuery("SELECT * FROM `customer` WHERE `id`=" + book.getBookId());
+            if(rs.next()){
+                book.setTitel(rs.getString("title"));
+                book.setAuthor(rs.getString("author"));
+                book.setPublisher(rs.getString("publisher"));
+                book.setGenre(rs.getString("genre"));
+            }
+            return book;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return book;
+        }
     }
 
     @Override

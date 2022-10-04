@@ -12,6 +12,7 @@ public class MysqlConnection {
   final private String[] requiredTables = new String[] {
     "book", "customer", "order"
   };
+  final private String DB_URL = "jdbc:mysql://mysql:3306"; // docker hostname is mysql
   final private String DB_USER = "root";
   final private String DB_PASSWORD = "root";
   private Statement statement = null;
@@ -35,7 +36,7 @@ public class MysqlConnection {
     try {
       Class.forName("com.mysql.cj.jdbc.Driver");
       connection = DriverManager.getConnection(
-        "jdbc:mysql://mysql:3306", // docker hostname is mysql
+        DB_URL,
         DB_USER, DB_PASSWORD
       );
       statement = connection.createStatement();
