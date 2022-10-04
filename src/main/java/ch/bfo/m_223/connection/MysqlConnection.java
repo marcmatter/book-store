@@ -10,7 +10,7 @@ import org.apache.ibatis.jdbc.ScriptRunner;
 
 public class MysqlConnection {
   final private String[] requiredTables = new String[] {
-    "book", "customer", "order", "genere", "author", "publisher"
+    "book", "customer", "order"
   };
   final private String DB_USER = "root";
   final private String DB_PASSWORD = "root";
@@ -26,6 +26,10 @@ public class MysqlConnection {
   public Statement getStatment() {
     return statement;
   }
+  public Connection getConnection() {
+    System.out.println(connection);
+    return connection;
+  }
   
   private void establishConnection() {
     try {
@@ -40,6 +44,7 @@ public class MysqlConnection {
       statement.execute("USE book_store");
     } catch (Exception exception) {
       System.out.println(exception);
+      System.exit(1);
     }
   }
   
@@ -70,6 +75,11 @@ public class MysqlConnection {
       );
       sr.runScript(reader);
       System.out.println("Datenbank zurückgesetzt");
+      reader = new BufferedReader(
+        new FileReader("src/main/resources/scripts/sample_data.sql")
+      );
+      sr.runScript(reader);
+      System.out.println("Added sample data");
     } catch (Exception exception) {
       System.out.println(exception);
     }
