@@ -42,7 +42,27 @@ public class BookStoreStatments implements IBookStore {
 
     @Override
     public CustomerDto editCustomer(CustomerDto editedCustomer) {
-        return editedCustomer;
+        CustomerDto customer = new CustomerDto();
+        try {
+            String sql = """
+                UPDATE customer SET
+                name = ?,
+                prename = ?
+                WHERE id = ?
+                """;
+            PreparedStatement ps = connection.prepareStatement(
+                sql,
+                Statement.RETURN_GENERATED_KEYS
+            );
+            ps.setString(1, editedCustomer.getName());
+            ps.setString(2, editedCustomer.getPrename());
+            ps.setInt(3, editedCustomer.getCustomerId());
+            ps.executeUpdate();
+            return editedCustomer;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return customer;
+        }
     }
 
     @Override
@@ -85,14 +105,38 @@ public class BookStoreStatments implements IBookStore {
 
     @Override
     public BookDto editBook(BookDto editedBook) {
-        return editedBook;
+        BookDto book = new BookDto();
+        try {
+            String sql = """
+                UPDATE book SET
+                title = ?,
+                author = ?,
+                publisher = ?,
+                genre = ? 
+                WHERE id = ?
+                """;
+            PreparedStatement ps = connection.prepareStatement(
+                sql,
+                Statement.RETURN_GENERATED_KEYS
+            );
+            ps.setString(1, editedBook.getTitel());
+            ps.setString(2, editedBook.getAuthor());
+            ps.setString(3, editedBook.getPublisher());
+            ps.setString(4, editedBook.getGenre());
+            ps.setInt(5, editedBook.getBookId());
+            ps.executeUpdate();
+            return editedBook;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return book;
+        }
     }
 
     @Override
     public BookDto createBook(BookDto newBook) {
         BookDto book = new BookDto();
         try {
-            String sql = "INSERT INTO `book`(title, author, genere, publisher) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO `book`(title, author, genre, publisher) VALUES (?, ?, ?, ?)";
             PreparedStatement ps = connection.prepareStatement(
                 sql,
                 Statement.RETURN_GENERATED_KEYS
@@ -109,7 +153,7 @@ public class BookStoreStatments implements IBookStore {
             rs = statment.executeQuery("SELECT * FROM `book` WHERE `id`=" + book.getBookId());
             if (rs.next()) {
                 book.setTitel(rs.getString("title"));
-                book.setGenre(rs.getString("genere"));
+                book.setGenre(rs.getString("genre"));
                 book.setPublisher(rs.getString("publisher"));
                 book.setAuthor(rs.getString("author"));
             }
@@ -152,7 +196,7 @@ public class BookStoreStatments implements IBookStore {
                 book.setTitel(rs.getString("title"));
                 book.setAuthor(rs.getString("author"));
                 book.setPublisher(rs.getString("publisher"));
-                book.setGenre(rs.getString("genere"));
+                book.setGenre(rs.getString("genre"));
                 results.add(book);
             }
             return results;

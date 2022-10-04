@@ -14,6 +14,9 @@ public class EditBookAction extends Action {
     public void executeAction() {
         System.out.println("Buch bearbeiten");
         BookDto buch = new BookDto();
+        
+        System.out.println("Eingeben der Id");
+        buch.setBookId(super.scanner.nextInt());
 
         System.out.println("Eingeben vom Titel");
         buch.setTitel(super.scanner.next());

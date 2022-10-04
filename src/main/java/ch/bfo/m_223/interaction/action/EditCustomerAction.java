@@ -15,6 +15,9 @@ public class EditCustomerAction extends Action {
         System.out.println("Kunde bearbeiten");
         CustomerDto kunde = new CustomerDto();
 
+        System.out.println("Eingeben der Id");
+        kunde.setCustomerId(super.scanner.nextInt());
+        
         System.out.println("Eingeben vom Name");
         kunde.setName(super.scanner.next());
 

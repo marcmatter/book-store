@@ -1,7 +1,7 @@
 USE `book_store`;
 
 INSERT INTO `book`
-(`title`, `author`, `genere`, `publisher`) VALUES
+(`title`, `author`, `genre`, `publisher`) VALUES
 ('Twilight of Kaus', 'Brown Dan', 'Fantasy', 'Pearson'),
 ('Queen of Nirvana', 'Christie Agatha', 'Science Fiction', 'Thomson Reuters'),
 ('Playground Bride', 'Coelho Paulo', 'Action & Adventure', 'RELX'),
