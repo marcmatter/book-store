@@ -93,8 +93,8 @@ public class BookStoreStatments implements IBookStore {
                 SET author = ? 
                 SET publisher = ? 
                 SET genre = ? 
-                WHERE id = 
-                """ + editedBook.getBookId();
+                WHERE id = ?
+                """;
             PreparedStatement ps = connection.prepareStatement(
                 sql,
                 Statement.RETURN_GENERATED_KEYS
@@ -103,6 +103,7 @@ public class BookStoreStatments implements IBookStore {
             ps.setString(2, editedBook.getAuthor());
             ps.setString(3, editedBook.getPublisher());
             ps.setString(4, editedBook.getGenre());
+            ps.setInt(5, editedBook.getBookId());
             ps.executeUpdate();
             ResultSet rs=ps.getGeneratedKeys();
             if(rs.next()){
