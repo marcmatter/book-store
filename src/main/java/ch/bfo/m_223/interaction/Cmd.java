@@ -55,6 +55,8 @@ public class Cmd {
                 return new EditCustomerAction(scanner, bookStore);
             case SEARCHBOOK:
                 return new SearchBookAction(scanner, bookStore);
+            case EXIT:
+                System.exit(0);
             default:
                 throw new RuntimeException("No implementation for " + befehl + " found");
         }
