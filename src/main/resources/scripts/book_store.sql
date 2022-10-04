@@ -7,7 +7,7 @@ CREATE TABLE `book` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
   `title` VARCHAR(50) NOT NULL,
   `author` VARCHAR(50),
-  `genere` VARCHAR(50),
+  `genre` VARCHAR(50),
   `publisher` VARCHAR(50)
 );
 
