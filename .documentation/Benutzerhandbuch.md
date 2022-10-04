@@ -2,12 +2,9 @@
 
 # Entwickeln im Devcontainer
 
-<aside>
 💡 **Anforderungen**
 - Docker ist gestartet
 - VSCode mit offiziellen Microsoft Extension [Remote Development](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack)
-
-</aside>
 
 1. Öffnen Sie das Programm in VS Code
 2. Klicken Sie unten rechts auf das Connection Icon und danach auf “Open Folder in Container”
